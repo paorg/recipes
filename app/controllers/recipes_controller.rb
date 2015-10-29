@@ -1,6 +1,8 @@
 class RecipesController < ApplicationController
 
   before_action :find_recipe, only: [:show, :edit, :udpate, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_permission, only: [:edit, :destroy]
 
   def index
     @recipe = Recipe.all.order("created_at DESC")
@@ -10,11 +12,11 @@ class RecipesController < ApplicationController
   end
 
   def new
-    @recipe = Recipe.new
+    @recipe = current_user.recipes.build
   end
 
   def create
-    @recipe = Recipe.new(recipe_params)
+    @recipe = current_user.recipes.build(recipe_params)
     if @recipe.save
       redirect_to @recipe, notice: "Successfully created new recipe!"
     else
@@ -41,17 +43,25 @@ class RecipesController < ApplicationController
     redirect_to root_path, notice: "Successsfully deleted recipe"
   end
 
-
+  def require_permission
+    if current_user != Recipe.find(params[:id]).user
+      flash[:notice] = "You can't make changes to a recipe that you don't own."
+      render 'show'
+    end
+  end
   private
 
-    def recipe_params
-      params.require(:recipe).permit(:title, :description, :image)
-    end
+  def recipe_params
+    params.require(:recipe).permit(:title, :description, :image, 
+     ingredients_attributes:[:id, :name, :_destroy],
+     directions_attributes: [:id, :step, :_destroy])
+
+  end
 
 
-    def find_recipe
-      @recipe = Recipe.find(params[:id])
-    end
+  def find_recipe
+    @recipe = Recipe.find(params[:id])
+  end
 
 
 end
