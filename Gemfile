@@ -16,7 +16,10 @@ gem 'haml', '~> 4.0', '>= 4.0.7'
 gem 'simple_form'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.5.1'
 gem 'paperclip', '~> 4.3', '>= 4.3.1'
+gem 'aws-sdk'
 gem 'cocoon', '~> 1.2', '>= 1.2.6'
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
 
 group :development, :test do
   gem 'byebug'
