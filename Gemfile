@@ -21,6 +21,7 @@ gem 'cocoon', '~> 1.2', '>= 1.2.6'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
 
+
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
